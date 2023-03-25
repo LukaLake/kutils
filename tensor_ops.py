@@ -15,7 +15,7 @@ def SetActiveGPU(number=0):
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
     if not isinstance(number,list): number=[number]
     os.environ["CUDA_VISIBLE_DEVICES"] = ', '.join(map(str,number))
-    print 'Visible GPU(s):', os.environ["CUDA_VISIBLE_DEVICES"]
+    print ('Visible GPU(s):', os.environ["CUDA_VISIBLE_DEVICES"])
 
 def GPUMemoryCap(fraction=1):
     """

@@ -1,3 +1,7 @@
+import os, sys
+current_dir = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(current_dir)
+
 import generic, tensor_ops, image_utils
 import generators, model_helper, applications
 
@@ -19,4 +23,4 @@ logger.addFilter(WarningFilter())
 import warnings
 warnings.filterwarnings("ignore")
 
-print 'loaded kutils'
+print ('loaded kutils')

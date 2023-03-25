@@ -240,7 +240,7 @@ class ModelHelper:
         ids = self.ids
         params = self.params
                    
-        print '\nTraining model:', self.model_name()
+        print ('\nTraining model:', self.model_name())
         
         if train_gen is None:
             train_gen = self.make_generator(ids[ids.set == 'training'])
@@ -257,13 +257,13 @@ class ModelHelper:
                            metrics=params.metrics)
 
         if self.verbose:
-            print '\nGenerator parameters:'
-            print '---------------------'
+            print ('\nGenerator parameters:')
+            print ('---------------------')
             pretty(self.gen_params)
-            print '\nMain parameters:'
-            print '----------------'
+            print ('\nMain parameters:')
+            print ('----------------')
             pretty(self.params)
-            print '\nLearning'
+            print ('\nLearning')
 
         history = self.model.fit_generator(train_gen, epochs = epochs,
                                            steps_per_epoch   = len(train_gen),
@@ -288,23 +288,23 @@ class ModelHelper:
         model_files = glob.glob(model_path)
 
         if os.path.exists(log_dir):
-            print 'Found logs:'
-            print log_dir
+            print ('Found logs:')
+            print (log_dir)
             if raw_confirm('Delete?'):
-                print 'Deleting', log_dir
+                print ('Deleting', log_dir)
                 shutil.rmtree(log_dir)
         else:
-            print '(No logs found)'
+            print ('(No logs found)')
 
         if model_files:
-            print 'Found model(s):'
-            print model_files
+            print ('Found model(s):')
+            print (model_files)
             if raw_confirm('Delete?'):
                 for mf in model_files: 
-                    print 'Deleting', mf
+                    print ('Deleting', mf)
                     os.unlink(mf)
         else:
-            print '(No models found)'
+            print ('(No models found)')
         
     def predict(self, test_gen=None, output_layer=None, 
                 repeats=1, batch_size=None, remodel=True):
@@ -329,12 +329,12 @@ class ModelHelper:
                 layer_name = [l.name for l in self.model.layers 
                               if output_layer in l.name][-1]
                 output_layer = self.model.get_layer(layer_name)
-                print 'Output of layer:', output_layer.name
+                print ('Output of layer:', output_layer.name)
                 if isinstance(output_layer, Model):
                     outputs = output_layer.outputs[0]
                 else:
                     outputs = output_layer.output
-                print 'Output tensor:', outputs
+                print ('Output tensor:', outputs)
                 model = Model(inputs  = self.model.input, 
                               outputs = outputs) 
         else: 
@@ -376,15 +376,15 @@ class ModelHelper:
                           ('_weights' if from_weights else '') + '.h5')
         model_path = os.path.join(self.params.models_root, model_file_name)
         if not os.path.exists(model_path):
-            print 'Model NOT loaded:', model_file_name, 'does not exist'
+            print ('Model NOT loaded:', model_file_name, 'does not exist')
             return False
         else:
             if from_weights:
                 self.model.load_weights(model_path, by_name=by_name)
-                print 'Model weights loaded:', model_file_name
+                print ('Model weights loaded:', model_file_name)
             else:
                 self.model = load_model(model_path)
-                print 'Model loaded:', model_file_name
+                print ('Model loaded:', model_file_name)
             return True
 
     def save_model(self, weights_only=False, model=None, name_extras=''):
@@ -398,17 +398,17 @@ class ModelHelper:
         :param name_extras: append this to model_name
         """
         model = model or self.model
-        print 'Saving model', model.name, 'spanning',\
-              len(self.model.layers), 'layers'
+        print ('Saving model', model.name, 'spanning',\
+              len(self.model.layers), 'layers')
         if weights_only:
             model_file = self.model_name() + name_extras + '_final_weights.h5'
             model.save_weights(os.path.join(self.params.models_root, model_file))
-            print 'Model weights saved:', model_file
+            print ('Model weights saved:', model_file)
         else:
             model_file = self.model_name() + name_extras + '_final.h5'
             model.compile(optimizer=self.params.optimizer, loss="mean_absolute_error")
             model.save(os.path.join(self.params.models_root, model_file))
-            print 'Model saved:', model_file
+            print ('Model saved:', model_file)
 
     def save_activations(self, output_layer=None, file_path=None, ids=None,
                          groups=1, verbose=False, over_write=False, name_suffix='',
@@ -448,8 +448,8 @@ class ModelHelper:
                                           verbose       = verbose,
                                           fixed_batches = False)
         if verbose:
-            print 'Saving activations for layer:', (output_layer or 'final')
-            print 'File:', file_path
+            print ('Saving activations for layer:', (output_layer or 'final'))
+            print ('File:', file_path)
 
         data_gen = self.make_generator(ids, **params)
 

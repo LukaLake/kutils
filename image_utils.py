@@ -181,18 +181,18 @@ def resize_folder(path_src, path_dst, image_size_dst=None,
     for imtype in image_types:
         pattern = os.path.join(path_src, imtype)
         file_list.extend(glob.glob(pattern))
-    print 'Found', len(file_list), 'images'
+    print ('Found', len(file_list), 'images')
     
     try:
         os.makedirs(path_dst)
     except: pass
 
-    print 'Resizing images from', path_src, 'to', path_dst
+    print ('Resizing images from', path_src, 'to', path_dst)
     
     errors = []
     for (i, file_path_src) in enumerate(file_list):
         if i % 100 == 0:
-            print i,
+            print (i),
 
         try:            
             file_name = os.path.split(file_path_src)[1]
@@ -232,13 +232,13 @@ def check_images(image_dir, image_types =\
     for imtype in image_types:
         pattern = os.path.join(image_dir, imtype)
         file_list.extend(glob.glob(pattern))
-    print 'Found', len(file_list), 'images'
+    print ('Found', len(file_list), 'images')
         
     image_names_err = []
     image_names_all = []
     for (i, file_path) in enumerate(file_list):
-        if i % (len(file_list)/20) == 0: print i,
-        elif i % (len(file_list)/1000) == 0: print '.',
+        if i % (len(file_list)/20) == 0: print (i),
+        elif i % (len(file_list)/1000) == 0: print ('.'),
 
         try:            
             file_dir, file_name = os.path.split(file_path)
@@ -262,14 +262,14 @@ def save_images_to_h5(image_path, h5_path, over_write=False,
     """
 
     file_list = glob.glob(os.path.join(image_path, '*.jpg'))
-    print 'Found', len(file_list), 'JPG images'  
+    print ('Found', len(file_list), 'JPG images' ) 
     make_dirs(h5_path)
-    print 'Saving images from', image_path, 'to', h5_path
+    print ('Saving images from', image_path, 'to', h5_path)
     
     with H5Helper(h5_path, over_write=over_write) as h:
         for i, batch in enumerate(chunks(file_list, batch_size)):
             if i % 10 == 0:
-                print i*batch_size,
+                print (i*batch_size),
             image_names = [unicode(os.path.basename(path)) for path in batch]
             images = read_image_batch(batch, image_size=image_size_dst)
             h.write_data(images, dataset_names=image_names)            
@@ -372,7 +372,7 @@ class ImageAugmenter:
                      for c, dim in zip(crop_size, self.image.shape[:2])]
         
         if self.verbose:
-            print 'image_size:', self.image.shape, 'crop_size:', crop_size
+            print ('image_size:', self.image.shape, 'crop_size:', crop_size)
 
         if crop_pos is None:
             if crop_size != self.image.shape[:2]:

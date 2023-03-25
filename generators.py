@@ -49,7 +49,7 @@ class DataGeneratorDisk(keras.utils.Sequence):
         self.__dict__.update(**params)  # set all as self.<param>
 
         if self.verbose:
-            print 'Initialized DataGeneratorDisk'
+            print ('Initialized DataGeneratorDisk')
         self.on_epoch_end()  # initialize indexes
 
     def __len__(self):
@@ -62,7 +62,7 @@ class DataGeneratorDisk(keras.utils.Sequence):
         indexes_batch = self.indexes[index*self.batch_size:(index+1)*self.batch_size]
         ids_batch = self.ids.iloc[indexes_batch].reset_index(drop=True)
         if self.verbose:
-            if index%10==0: print '.',
+            if index%10==0: print ('.'),
         return self._data_generation(ids_batch)
 
     def on_epoch_end(self):
@@ -169,7 +169,7 @@ class DataGeneratorHDF5(DataGeneratorDisk):
         self.__dict__.update(**params)  # set all as self.<param>
 
         if self.verbose:
-            print 'Initialized DataGeneratorHDF5'
+            print ('Initialized DataGeneratorHDF5')
         self.on_epoch_end()  # initialize indexes
 
     def _data_generation(self, ids_batch):
