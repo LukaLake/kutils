@@ -1,26 +1,22 @@
-import os, sys
-current_dir = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(current_dir)
+from __future__ import print_function
+from __future__ import absolute_import
 
-import generic, tensor_ops, image_utils
-import generators, model_helper, applications
+# ignore warnings scikit-image, numpy > 1.17 in tensorflow
+import warnings
+warnings.filterwarnings('ignore',category=FutureWarning)
 
-from keras import backend as K
-if K.backend()=='tensorflow': 
-    K.set_image_dim_ordering("tf")
+from . import generic, tensor_ops, image_utils, generators, model_helper, applications
 
-# remove tensorflow warning
+# remove tensorflow warnings
 import logging
 class WarningFilter(logging.Filter):
     def filter(self, record):
         msg = record.getMessage()
-        tf_warning = 'retry (from tensorflow.contrib.learn.python.learn.datasets.base)' in msg
-        return not tf_warning           
+        tf_warning1 = 'retry (from tensorflow.contrib.learn.python.learn.datasets.base)' in msg
+        tf_warning2 = 'is deprecated' in msg
+        return not (tf_warning1 or tf_warning2)
 logger = logging.getLogger('tensorflow')
 logger.addFilter(WarningFilter())
 
-# if too many warnings from scikit-image 
-import warnings
-warnings.filterwarnings("ignore")
+print('Loaded Kuti')
 
-print ('loaded kutils')
